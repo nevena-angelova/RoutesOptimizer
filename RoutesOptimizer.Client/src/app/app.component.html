@@ -1,7 +1,18 @@
 <main class="main">
   <div class="content">
-      <h1>Hello, {{ title }}</h1>
-      <p>Congratulations! Your app is running. 🎉</p>
+    <h1>Планиране на пътуване</h1>
+    <p>Изберете начална и крайна дестинация</p>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <div>От:</div>
+      <app-dropdown-search (selectionChange)="onFromSelect($event)"></app-dropdown-search>
+      <div>До:</div>
+      <app-dropdown-search (selectionChange)="onToSelect($event)"></app-dropdown-search>
     </div>
+    <div class="col-md-10">
+      <app-map [fromStop]="fromStop" [toStop]="toStop"></app-map>
+    </div>
+  </div>
 </main>
 <router-outlet />

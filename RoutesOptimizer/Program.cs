@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using RoutesOptimizer.Data;
+using RoutesOptimizer;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,15 +11,21 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add CORS policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp",
-        builder => builder
-            .WithOrigins("http://localhost:4200")  // Angular app's origin
-            .AllowAnyMethod()                      // Allow all HTTP methods (GET, POST, etc.)
-            .AllowAnyHeader()                      // Allow all headers
-            .AllowCredentials());                  // Allow credentials if needed
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()  // Allow requests from any origin
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
 });
+
+builder.Services.AddDbContext<RoutesOptimizerDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
 var app = builder.Build();
 
@@ -32,6 +42,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.UseCors("AllowAngularApp");
+app.UseCors("AllowAll");
 
 app.Run();

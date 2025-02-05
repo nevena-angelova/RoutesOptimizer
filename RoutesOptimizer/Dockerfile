@@ -4,12 +4,12 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["RoutesOptimizer/RoutesOptimizer.csproj", "RoutesOptimizer/"]
+COPY ["RoutesOptimizer.Data/RoutesOptimizer.Data.csproj", "RoutesOptimizer.Data/"]
 RUN dotnet restore "./RoutesOptimizer/RoutesOptimizer.csproj"
 COPY . .
 WORKDIR "/src/RoutesOptimizer"

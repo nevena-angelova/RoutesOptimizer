@@ -2,15 +2,26 @@ version: '3.4'
 
 services:
   routesoptimizer:
-    image: ${DOCKER_REGISTRY-}routesoptimizer
+    image: ${DOCKER_REGISTRY-}routes_optimizer
+    container_name: web_app
+    depends_on:
+     - mssql
     build:
       context: .
       dockerfile: RoutesOptimizer/Dockerfile
     ports:
-    - '4015:8081'
+    - '4015:8080'
+    restart: on-failure
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=mssql,1433;Database=RoutesOptimizer;User Id=sa;Password=MyStrong!Passw0rd;TrustServerCertificate=True;
+      - ASPNETCORE_URLS=http://+:8080
+    networks:
+        - frontend_network
+        - backend_network
 
   routesoptimizer.client:
-    image: ${DOCKER_REGISTRY-}routesoptimizer.client
+    image: ${DOCKER_REGISTRY-}routes_optimizer_client
+    container_name: web_client
     build:
       context: RoutesOptimizer.Client
       dockerfile: Dockerfile
@@ -18,4 +29,24 @@ services:
       - '4200:80'
     depends_on:
        - routesoptimizer
+    networks:
+        - frontend_network
 
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mssql_server
+    environment:
+      SA_PASSWORD: "MyStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1433:1433"
+    volumes:
+       - sql_data:/var/opt/mssql
+    networks:
+        - backend_network
+
+volumes:
+  sql_data:
+networks:
+  frontend_network:
+  backend_network:  

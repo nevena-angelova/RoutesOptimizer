@@ -1,0 +1,10 @@
+<div class="position-relative left">
+
+  <input type="text" class="form-control mb-5" [(ngModel)]="searchTerm" (input)="filterOptions()" placeholder="Search..." (focus)="showDropdown = true">
+
+  <ul class="list-group position-absolute w-100" *ngIf="showDropdown && filteredOptions.length > 0">
+    <li class="list-group-item list-group-item-action" *ngFor="let stop of filteredOptions" (click)="selectOption(stop)">
+      {{ stop.name }}
+    </li>
+  </ul>
+</div>
