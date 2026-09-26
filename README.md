@@ -1,3 +1,12 @@
+## Technologies
+
+- **Frontend:** Angular
+- **Containerization:** Docker
+- **Cloud:** Microsoft Azure
+- **Container Registry:** Azure Container Registry
+- **Deployment:** Azure Container Instances
+
+
 Настоящият проект представя хостинг на динамичен уеб сайт на Azure. За реализирането му са ползвани технологии Node.js и Angular, а също и JavaScript библиотека за интерактивни карти  Leaflet. По зададени координати приложението показва маршрут на картата.
 На посочения github адрес е качен сорс кодът на приложенито: https://github.com/nevena-angelova/RoutesOptimizer/tree/master/RoutesOptimizer.Client
 
